@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo systemctl nomask \
+    sleep.target \
+    suspend.target \
+    hibernate.target \
+    hybrid-sleep.target
