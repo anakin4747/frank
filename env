@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source ./src/poky/oe-init-build-env
+
+# bitbake-layers
+alias \
+    create-layer='bitbake-layers create-layer' \
+    fetch-layer='bitbake-layers layerindex-fetch' \
+    remove-layer='bitbake-layers remove-layer' \
+    show-layers='bitbake-layers show-layers' \
+    show-recipes='bitbake-layers show-recipes' \
+
+alias \
+    rq='runqemu slirp qemux86-64 nographic' \
