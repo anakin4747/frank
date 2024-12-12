@@ -1,9 +1,11 @@
 #!/bin/bash
 
 source ./src/poky/oe-init-build-env
+cd ..
 
 # bitbake-layers
 alias \
+    add-layer='bitbake-layers add-layer' \
     create-layer='bitbake-layers create-layer' \
     fetch-layer='bitbake-layers layerindex-fetch' \
     remove-layer='bitbake-layers remove-layer' \
