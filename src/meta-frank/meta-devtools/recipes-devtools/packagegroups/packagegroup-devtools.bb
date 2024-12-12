@@ -5,13 +5,13 @@ LICENSE = "MIT"
 inherit packagegroup
 
 PACKAGES = "\
-    ${PN}-editor \
+    ${PN}-editors \
     ${PN}-shells \
     ${PN}-tools \
     ${PN}-termemu \
 "
 
-RDEPENDS:${PN}-editor = "\
+RDEPENDS:${PN}-editors = "\
     vim \
 "
 
@@ -24,6 +24,6 @@ RDEPENDS:${PN}-tools = "\
     tmux \
 "
 
-# RDEPENDS:${PN}-termemu = "\
-#     st \
-# "
+RDEPENDS:${PN}-termemu = "\
+    simple-terminal \
+"
