@@ -19,5 +19,5 @@ DEPENDS = "\
 DEPENDS += " ncurses-native"
 
 do_install () {
-	oe_runmake install 'DESTDIR=${D}' 'PREFIX=/usr'
+	oe_runmake install 'DESTDIR=${D}' 'PREFIX=${prefix}'
 }
