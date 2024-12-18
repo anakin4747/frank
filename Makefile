@@ -16,7 +16,7 @@ find-layers: ## Find layers in ./src and save them to bblayers.conf
 
 .PHONY: build
 build: find-layers ## Build yocto
-	MACHINE=$(MACHINE); DISTRO=$(DISTRO); . ./src/poky/oe-init-build-env > /dev/null; bitbake -k $(IMAGE)
+	. ./src/poky/oe-init-build-env > /dev/null; MACHINE=$(MACHINE) DISTRO=$(DISTRO) bitbake -k $(IMAGE)
 
 .PHONY: help
 help: ## List all make targets
