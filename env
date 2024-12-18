@@ -14,3 +14,10 @@ alias \
 
 alias \
     rq='runqemu slirp qemux86-64 nographic' \
+
+bbe () {
+    [ $# -eq 1 ] || return 1;
+
+    bitbake -e "$1" | tee build/"$1".env
+    echo build/"$1".env
+}
