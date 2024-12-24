@@ -24,8 +24,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=9366235cf648a9664dae99bd4f957a97 \
 
 SRC_URI = "git://github.com/neovim/neovim.git;protocol=https;branch=master"
 
-# Modify these as desired
-PV = "1.0+git"
+PV = "0.10.2+git"
 SRCREV = "8f84167c30692555d3332565605e8a625aebc43c"
 
 S = "${WORKDIR}/git"
@@ -33,9 +32,16 @@ S = "${WORKDIR}/git"
 # NOTE: unable to map the following CMake package dependencies: Luajit Wasmtime Unibilium Iconv Libintl Treesitter Libuv Lpeg Luv Lua UTF8proc
 inherit cmake gettext
 
-# Specify any options you want to pass to cmake using EXTRA_OECMAKE:
-EXTRA_OECMAKE = ""
+PREFERRED_VERSION_lua = "5.1.5"
+PREFERRED_VERSION_lua-native = "5.1.5"
 
-DEPENDS += "lua-native"
-# Needs libluv not libuv
-# RDEPENDS:${PN} += "lua"
+DEPENDS += "\
+    lua-native \
+    luajit \
+    luv \
+    libuv \
+    lpeg \
+    treesitter \
+    unibilium \
+    utf8proc \
+"

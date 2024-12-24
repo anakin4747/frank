@@ -12,26 +12,20 @@
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = ""
 
-SRC_URI = "https://github.com/neovim/deps/raw/d495ee6f79e7962a53ad79670cb92488abe0b9b4/opt/lpeg-${PV}.tar.gz"
+SRC_URI = "https://github.com/neovim/deps/raw/d495ee6f79e7962a53ad79670cb92488abe0b9b4/opt/lpeg-${PV}.tar.gz \
+           file://0001-build-allow-for-cross-compilation.patch \
+           "
 SRC_URI[sha256sum] = "4b155d67d2246c1ffa7ad7bc466c1ea899bbc40fef0257cc9c03cecbaed4352a"
-
-
-# NOTE: this is a Makefile-only piece of software, so we cannot generate much of the
-# recipe automatically - you will need to examine the Makefile yourself and ensure
-# that the appropriate arguments are passed in.
-
 
 FILES:${PN} += "${libdir}/lpeg.so"
 
-do_configure () {
-	# Specify any needed configure commands here
-	:
-}
+PREFERRED_VERSION_lua = "5.1.5"
+PREFERRED_VERSION_lua-native = "5.1.5"
 
-do_compile () {
-	# You will almost certainly need to add additional arguments here
-	oe_runmake
-}
+DEPENDS += "\
+    lua \
+    lua-native \
+"
 
 do_install () {
     install -Dm 0644 ${S}/lpeg.so ${D}${libdir}/lpeg.so
