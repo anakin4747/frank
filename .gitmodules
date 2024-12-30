@@ -4,6 +4,3 @@
 [submodule "src/meta-openembedded"]
 	path = src/meta-openembedded
 	url = git://git.openembedded.org/meta-openembedded
-[submodule "src/meta-luarocks"]
-	path = src/meta-luarocks
-	url = https://github.com/chris2511/meta-luarocks.git
