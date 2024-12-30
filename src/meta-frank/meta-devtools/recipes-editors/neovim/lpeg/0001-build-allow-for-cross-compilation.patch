@@ -2,6 +2,7 @@ From 37d70288d263d0cd598b098ece0636f60b6e0a7c Mon Sep 17 00:00:00 2001
 From: Anakin Childerhose <anakin@childerhose.ca>
 Date: Mon, 23 Dec 2024 23:11:19 -0500
 Subject: [PATCH] build: allow for cross compilation
+Upstream-Status: Pending
 
 ---
  makefile | 9 +++++----

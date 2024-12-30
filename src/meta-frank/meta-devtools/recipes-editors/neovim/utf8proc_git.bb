@@ -13,14 +13,12 @@ LIC_FILES_CHKSUM = "file://LICENSE.md;md5=96d5a3ba306e0f24fb289427af484408"
 
 SRC_URI = "git://github.com/JuliaStrings/utf8proc.git;protocol=https;branch=master"
 
-# Modify these as desired
-PV = "1.0+git"
+PV = "3.0.0+git"
 SRCREV = "3de4596fbe28956855df2ecb3c11c0bbc3535838"
 
 S = "${WORKDIR}/git"
 
 inherit cmake
 
-# Specify any options you want to pass to cmake using EXTRA_OECMAKE:
-EXTRA_OECMAKE = ""
+EXTRA_OECMAKE = "-DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=${prefix}"
 

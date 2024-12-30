@@ -33,9 +33,6 @@ SRCREV = "3ff02c8c2beaaf125f3ee5db950138913ffcf978"
 
 S = "${WORKDIR}/git"
 
-# NOTE: unable to map the following CMake package dependencies: Lua LuaJIT Libuv
-# NOTE: the following library dependencies are unknown, ignoring: B
-#       (this is based on recipes that have previously been built and packaged)
 inherit cmake
 
 FILES:${PN} += "\
@@ -54,4 +51,5 @@ do_compile:prepend() {
 
 do_install:append() {
     install -Dm 0644 ${S}/src/luv.h ${D}${includedir}/luv/luv.h
+    install -Dm 0644 ${B}/luv.so ${D}${libdir}/lua/5.1/libluv.so.1
 }

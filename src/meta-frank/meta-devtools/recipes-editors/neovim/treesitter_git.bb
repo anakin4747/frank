@@ -19,10 +19,10 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=1a8b005a59bb827a79b65bcd4c01d9ec \
                     file://lib/src/unicode/LICENSE;md5=8bc5d32052a96f214cbdd1e53dfc935d"
 
-SRC_URI = "git://github.com/tree-sitter/tree-sitter.git;protocol=https;branch=master"
+SRC_URI = "git://github.com/tree-sitter/tree-sitter.git;protocol=https;branch=release-0.24"
 
-PV = "0.24.5+git"
-SRCREV = "cd94dbd57f5fcb7822cda9d59476771e7a605cfa"
+PV = "0.24.4+git"
+SRCREV = "e3c82633389256ccc2c5ab2e509046cbf20453d3"
 
 S = "${WORKDIR}/git"
 

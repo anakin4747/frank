@@ -19,13 +19,13 @@ SRC_URI[sha256sum] = "4b155d67d2246c1ffa7ad7bc466c1ea899bbc40fef0257cc9c03cecbae
 
 FILES:${PN} += "${libdir}/lpeg.so"
 
-PREFERRED_VERSION_lua = "5.1.5"
-PREFERRED_VERSION_lua-native = "5.1.5"
-
-DEPENDS += "\
-    lua \
-    lua-native \
-"
+# PREFERRED_VERSION_lua = "5.1.5"
+# PREFERRED_VERSION_lua-native = "5.1.5"
+#
+# DEPENDS += "\
+#     lua \
+#     lua-native \
+# "
 
 do_install () {
     install -Dm 0644 ${S}/lpeg.so ${D}${libdir}/lpeg.so
