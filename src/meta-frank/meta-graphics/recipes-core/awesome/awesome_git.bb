@@ -10,35 +10,21 @@ SRCREV = "0f950cbb625175134b45ea65acdf29b2cbe8c456"
 
 S = "${WORKDIR}/git"
 
-# NOTE: unable to map the following pkg-config dependencies: xcb-errors
-#       (this is based on recipes that have previously been built and packaged)
-# NOTE: the following library dependencies are unknown, ignoring: execinfo
-#       (this is based on recipes that have previously been built and packaged)
-DEPENDS = "dbus"
-
 inherit cmake pkgconfig
+
+PREFERRED_VERSION_lua = "5.4"
+PREFERRED_VERSION_lua-native = "5.4"
 
 DEPENDS += "\
     lua-native \
-    lgi \
-    lua-ldoc-native \
+    asciidoc-native \
+    cmake-native \
+    dbus \
+    lgi-native \
     libxdg-basedir \
     gdk-pixbuf \
     cairo \
-    startup-notification \
-    xcb-util \
-    xcb-util-cursor \
-    xcb-util-keysyms \
-    xcb-util-wm \
-    xcb-util-xrm \
-    xdg-user-dirs \
-"
-RDEPENDS:${PN} = "\
-    lua \
-    lgi \
-    libxdg-basedir \
-    gdk-pixbuf \
-    cairo \
+    pango \
     startup-notification \
     xcb-util \
     xcb-util-cursor \
@@ -48,37 +34,24 @@ RDEPENDS:${PN} = "\
     xdg-user-dirs \
 "
 
-# I think you will have to learn how to build awesome more and hand make this
-# recipe
+RDEPENDS:${PN} += "\
+    lgi \
+"
 
-# Right now this is failing since LUA_PATH is not pointing to the correct
-# directory to find lgi.lua
-# This is where is it ${WORKDIR}/recipe-sysroot/usr/share/lua/5.1/lgi.lua
+FILES:${PN} += " ${datadir}/xsessions"
 
-# This is what LUA_PATH is hardcoded to:
-# /home/kin/proj/frank/build/tmp/work/core2-64-oe-linux/awesome/4.3+git/git/tests/examples/shims/?.lua
-# /home/kin/proj/frank/build/tmp/work/core2-64-oe-linux/awesome/4.3+git/git/tests/examples/shims/?/init.lua
-# /home/kin/proj/frank/build/tmp/work/core2-64-oe-linux/awesome/4.3+git/git/tests/examples/shims/?
-# /home/kin/proj/frank/build/tmp/work/core2-64-oe-linux/awesome/4.3+git/git/lib/?.lua
-# /home/kin/proj/frank/build/tmp/work/core2-64-oe-linux/awesome/4.3+git/git/lib/?/init.lua
-# /home/kin/proj/frank/build/tmp/work/core2-64-oe-linux/awesome/4.3+git/git/lib/?
-# /home/kin/proj/frank/build/tmp/work/core2-64-oe-linux/awesome/4.3+git/git/themes/?.lua
-# /home/kin/proj/frank/build/tmp/work/core2-64-oe-linux/awesome/4.3+git/git/themes/?
-# /home/kin/proj/frank/build/tmp/work/core2-64-oe-linux/awesome/4.3+git/git/tests/examples/?.lua
-# /home/kin/proj/frank/build/tmp/work/x86_64-linux/lua-native/5.4.7/recipe-sysroot-native/usr/share/lua/5.4/?.lua
-# /home/kin/proj/frank/build/tmp/work/x86_64-linux/lua-native/5.4.7/recipe-sysroot-native/usr/share/lua/5.4/?/init.lua
-# /home/kin/proj/frank/build/tmp/work/x86_64-linux/lua-native/5.4.7/recipe-sysroot-native/usr/lib/lua/5.4/?.lua
-# /home/kin/proj/frank/build/tmp/work/x86_64-linux/lua-native/5.4.7/recipe-sysroot-native/usr/lib/lua/5.4/?/init.lua
-# ./?.lua
-# ./?/init.lua"
+EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DGENERATE_DOC=OFF -DGENERATE_MANPAGES=OFF -DSYSCONFDIR=${sysconfdir}"
 
-# OECMAKE_GENERATOR_ARGS:prepend = "-DLUA_PATH=anakin "
-LUA_PATH = "ANAKIN"
-
-# Gets passed to ninja as argument. Ninja does not accept env vars are arguments
-# EXTRA_OECMAKE_BUILD += "LUA_PATH=anakin"
-
-# Failed, did not set LUA_PATH
-# do_compile:prepend() {
-#     export LUA_PATH=anakin
-# }
+INSANE_SKIP:${PN} += "buildpaths"
+INSANE_SKIP:${PN}-src += "buildpaths"
+# something doesn't smell right here. why would a generated file be in FILES:${PN}-src?
+INSANE_SKIP:${PN}-dbg += "buildpaths"
+# Messy, lua paths end up compiled in the references to TMPDIR, hence the INSANE_SKIP
+do_compile:prepend() {
+    export PATH="${B}:$PATH"
+    export LUA_PATH="${S}/?.lua;$LUA_PATH"
+    export LUA_PATH="${STAGING_DATADIR_NATIVE}/lua/5.1/lgi/?.lua;$LUA_PATH"
+    export LUA_PATH="${STAGING_DATADIR_NATIVE}/lua/5.1/?.lua;$LUA_PATH"
+    export LUA_CPATH="${STAGING_LIBDIR_NATIVE}/lua/5.1/?.so;$LUA_CPATH"
+    export GI_TYPELIB_PATH="${STAGING_LIBDIR}/girepository-1.0:$GI_TYPELIB_PATH"
+}
