@@ -12,6 +12,11 @@ alias \
     show-layers='bitbake-layers show-layers' \
     show-recipes='bitbake-layers show-recipes' \
 
+# recipetool
+alias \
+    create-append='recipetool newappend' \
+
+# runqemu
 alias \
     rq='runqemu slirp qemux86-64 nographic' \
     rqg='runqemu slirp qemux86-64' \
