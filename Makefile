@@ -38,3 +38,8 @@ distro: ## Set DISTRO variable in build/conf/local.conf
 .PHONY: build
 build: layers machine distro ## Build yocto
 	. ./src/poky/oe-init-build-env > /dev/null; bitbake -k $(IMAGE)
+
+.PHONY: distclean
+distclean: ## Remove all but conf from build
+	rm -rf build/{cache,downloads,tmp,sstate-cache}
+
