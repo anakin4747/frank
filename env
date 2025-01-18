@@ -19,17 +19,18 @@ alias \
 bbe() {
     [ $# -eq 1 ] || return 1;
 
-    bitbake -e "$1" | tee build/"$1".env
-    echo build/"$1".env
+    flattened_1="$(echo "$1" | tr '/' '_')"
+    bitbake -e "$1" | tee build/"$flattened_1".env
+    echo build/"$flattened_1".env
 }
 
 getvar() {
     case "$#" in
         1) 
-            bitbake-getvar "$1" | sed -nE "s/$1=\"(.*)\"/\1/p"
+            bitbake-getvar "$1" | sed -nE "s|$1=\"(.*)\"|\1|p"
             ;;
         2)
-            bitbake-getvar -r "$2" "$1" | sed -nE "s/$1=\"(.*)\"/\1/p"
+            bitbake-getvar -r "$2" "$1" | sed -nE "s|$1=\"(.*)\"|\1|p"
             ;;
         *) 
             echo "wrong \$#" 
