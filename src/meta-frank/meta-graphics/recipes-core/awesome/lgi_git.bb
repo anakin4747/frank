@@ -32,7 +32,7 @@ do_compile () {
 }
 
 do_install () {
-	oe_runmake install 'DESTDIR=${D}' 'PREFIX=/usr'
+	oe_runmake install 'DESTDIR=${D}' 'PREFIX=${prefix}'
 }
 
 BBCLASSEXTEND = "native nativesdk"
