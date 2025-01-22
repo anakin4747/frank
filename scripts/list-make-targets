@@ -1,4 +1,10 @@
-#!/bin/bash
+#!/usr/bin/awk -f
 
-echo "Makefile targets:"
-awk -F":.*?## " '/^[ a-zA-Z_-]+:.*?## .*$/ { printf "\033[36m%-25s\033[0m %s\n", $1, $2 }' Makefile
+BEGIN { 
+	FS=":.*?## "
+	print "Makefile targets:"
+}
+
+/^[ a-zA-Z_-]+:.*?## .*$/ {
+	printf "\033[36m%-25s\033[0m %s\n", $1, $2
+}

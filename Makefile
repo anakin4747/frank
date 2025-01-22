@@ -11,7 +11,7 @@ IMAGE ?= core-image-minimal
 # This help target lists all targets that are commented with a double ##
 .PHONY: help
 help:
-	@./scripts/list-make-targets
+	@./scripts/list-make-targets $(MAKEFILE_LIST)
 
 .PHONY: layers
 layers: ## Find layers in ./src and save them to build/conf/bblayers.conf
