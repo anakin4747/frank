@@ -4,36 +4,26 @@
 # This is done by generating a build/conf/bblayers.conf and setting variables in
 # build/conf/local.conf all from this Makefile
 
-MACHINE ?= "t490"
-DISTRO ?= "frank"
-IMAGE ?= "core-image-minimal"
+MACHINE ?= qemux86-64
+DISTRO ?= frank
+IMAGE ?= core-image-minimal
 
 # This help target lists all targets that are commented with a double ##
 .PHONY: help
 help:
-	@echo "Makefile targets:"
-	@grep -E '^[ a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
-		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-25s\033[0m %s\n", $$1, $$2}'
+	@./scripts/list-make-targets
 
 .PHONY: layers
 layers: ## Find layers in ./src and save them to build/conf/bblayers.conf
-	@find $(PWD)/src -path '*meta*conf/layer.conf*' \
-		| xargs dirname \
-		| xargs dirname \
-		| awk '\
-			BEGIN { print("BBPATH = \"$${TOPDIR}\"\nBBFILES ?= \"\"\nBBLAYERS ?= \"\\") } \
-			{ print("   ", $$0, "\\") } \
-			END { print("\"") }' > build/conf/bblayers.conf
+	@./scripts/find-layers
 
 .PHONY: machine
 machine: ## Set MACHINE variable in build/conf/local.conf
-	@grep -qE '^MACHINE' build/conf/local.conf
-	sed -i 's/^MACHINE.*/MACHINE = $(MACHINE)/' build/conf/local.conf
+	@./scripts/setvar MACHINE $(MACHINE)
 
 .PHONY: distro
 distro: ## Set DISTRO variable in build/conf/local.conf
-	@grep -qE '^DISTRO' build/conf/local.conf
-	sed -i 's/^DISTRO.*/DISTRO = $(DISTRO)/' build/conf/local.conf
+	@./scripts/setvar DISTRO $(DISTRO)
 
 .PHONY: build
 build: layers machine distro ## Build yocto
