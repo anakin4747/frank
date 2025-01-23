@@ -1,4 +1,13 @@
 
+Next steps:
+- just get it to boot on the new laptop and develop on the current one
+- figure out what if you need an initramfs for the kernel to be able to access
+  the device the rootfs is on
+- figure out how to write it directly to the on board storage like how
+  sd-installer does
+- once you have it reliably booting on the new laptop then customize to the
+  point you are productive and switch over the second laptop.
+
 TODO:
  - add the build system as a recipe
    - Since I want to be able to use the same machine for building and testing I
