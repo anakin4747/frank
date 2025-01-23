@@ -13,16 +13,19 @@ IMAGE ?= core-image-minimal
 help:
 	@./scripts/list-make-targets $(MAKEFILE_LIST)
 
+build/conf/local.conf build/conf/bblayers.conf:
+	@. ./src/poky/oe-init-build-env > /dev/null
+
 .PHONY: layers
-layers: # Find layers in ./src and save them to build/conf/bblayers.conf
+layers: build/conf/bblayers.conf # Find layers in ./src and save them to build/conf/bblayers.conf
 	@./scripts/find-layers
 
 .PHONY: machine
-machine: # Set MACHINE variable in build/conf/local.conf
+machine: build/conf/local.conf # Set MACHINE variable in build/conf/local.conf
 	@./scripts/setvar MACHINE $(MACHINE)
 
 .PHONY: distro
-distro: # Set DISTRO variable in build/conf/local.conf
+distro: build/conf/local.conf # Set DISTRO variable in build/conf/local.conf
 	@./scripts/setvar DISTRO $(DISTRO)
 
 .PHONY: build

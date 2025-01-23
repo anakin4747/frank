@@ -5,12 +5,6 @@ var_value="$2"
 
 test "$#" -eq 2 || exit 1
 
-# if there isn't a local.conf get the template by sourcing oe-init-build-env in
-# a subshell
-test -f build/conf/local.conf || {
-	(source ./src/poky/oe-init-build-env build > /dev/null)
-}
-
 if grep -qE "^$var_name" build/conf/local.conf; then
 	# Change it in place if present in local.conf
 	sed -i "s|^$var_name.*|$var_name = \"$var_value\"|" build/conf/local.conf

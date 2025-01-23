@@ -4,8 +4,6 @@ LAYERS=$(find $PWD/src -path '*meta*conf/layer.conf*' \
         | xargs dirname | xargs dirname \
 	| awk '{ print "   ", $0, "\\" }')
 
-test -d build/conf || mkdir -p build/conf
-
 cat << EOF > build/conf/bblayers.conf
 BBPATH = "\${TOPDIR}"
 BBFILES ?= ""
