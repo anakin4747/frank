@@ -36,3 +36,6 @@ build: layers machine distro # Build yocto
 distclean: # Remove all but conf from build
 	rm -rf build/{cache,downloads,tmp,sstate-cache}
 
+.PHONY: menuconfig
+menuconfig: # Kernel make menuconfig
+	. ./src/poky/oe-init-build-env > /dev/null; bitbake -c menuconfig virtual/kernel
