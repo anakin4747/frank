@@ -8,10 +8,21 @@ MACHINE ?= qemux86-64
 DISTRO ?= frank
 IMAGE ?= core-image-minimal
 
-# This help target lists all targets that are commented with a double ##
+# Misc targets
+
 .PHONY: help
 help:
 	@./scripts/list-make-targets $(MAKEFILE_LIST)
+
+.PHONY: distclean
+distclean: # Remove all but conf from build
+	rm -rf build/{cache,downloads,tmp,sstate-cache}
+
+.PHONY: menuconfig
+menuconfig: # Kernel make menuconfig
+	. ./src/poky/oe-init-build-env > /dev/null; bitbake -c menuconfig virtual/kernel
+
+# Build targets
 
 build/conf/local.conf build/conf/bblayers.conf:
 	@. ./src/poky/oe-init-build-env > /dev/null
@@ -31,11 +42,3 @@ distro: build/conf/local.conf # Set DISTRO variable in build/conf/local.conf
 .PHONY: build
 build: layers machine distro # Build yocto
 	. ./src/poky/oe-init-build-env > /dev/null; bitbake -k $(IMAGE)
-
-.PHONY: distclean
-distclean: # Remove all but conf from build
-	rm -rf build/{cache,downloads,tmp,sstate-cache}
-
-.PHONY: menuconfig
-menuconfig: # Kernel make menuconfig
-	. ./src/poky/oe-init-build-env > /dev/null; bitbake -c menuconfig virtual/kernel
