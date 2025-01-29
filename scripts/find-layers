@@ -1,14 +1,6 @@
 #!/bin/bash
 
-LAYERS=$(find "$PWD/src" -path '*meta*conf/layer.conf*' -print0 \
-        | xargs -0 -n1 dirname | xargs -n1 dirname \
-        | awk '{ print "   ", $0, "\\" }')
-
-cat << EOF > build/conf/bblayers.conf
-BBPATH = "\${TOPDIR}"
-BBFILES ?= ""
-
-BBLAYERS ?= "\\
-$LAYERS
-"
-EOF
+find "$PWD/src" -path '*meta*conf/layer.conf*' -print0 \
+    | xargs -0 -n1 dirname \
+    | xargs -n1 dirname \
+    | xargs bitbake-layers add-layer
