@@ -8,7 +8,7 @@ MACHINE ?= qemux86-64
 DISTRO ?= frank
 IMAGE ?= core-image-minimal
 
-SUBMODULES = $(shell ./scripts/gitmodules)
+SUBMODULES := $(shell ./scripts/gitmodules)
 
 # Misc targets
 
