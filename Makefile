@@ -8,6 +8,8 @@ MACHINE ?= qemux86-64
 DISTRO ?= frank
 IMAGE ?= core-image-minimal
 
+SUBMODULES = $(shell ./scripts/gitmodules)
+
 # Misc targets
 
 .PHONY: help
@@ -24,11 +26,14 @@ menuconfig: # Kernel make menuconfig
 
 # Build targets
 
-build/conf/local.conf build/conf/bblayers.conf:
+$(SUBMODULES):
+	git submodule update --init --recursive --force
+
+build/conf/local.conf build/conf/bblayers.conf: $(SUBMODULES)
 	@. ./src/poky/oe-init-build-env > /dev/null
 
 .PHONY: layers
-layers: build/conf/bblayers.conf # Find layers in ./src and save them to build/conf/bblayers.conf
+layers: build/conf/bblayers.conf $(SUBMODULES) # Find layers in ./src and save them to build/conf/bblayers.conf
 	@./scripts/find-layers
 
 .PHONY: machine
@@ -40,5 +45,5 @@ distro: build/conf/local.conf # Set DISTRO variable in build/conf/local.conf
 	@./scripts/setvar DISTRO $(DISTRO)
 
 .PHONY: build
-build: layers machine distro # Build yocto
+build: layers machine distro $(SUBMODULES) # Build yocto
 	. ./src/poky/oe-init-build-env > /dev/null; bitbake -k $(IMAGE)

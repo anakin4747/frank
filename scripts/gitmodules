@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# This is a script since it is annoying to escape it correctly in a Makefile
+sed -nE 's|.*path = (.*)|\1|p' .gitmodules
