@@ -16,9 +16,13 @@ SUBMODULES = $(shell ./scripts/gitmodules)
 help:
 	@./scripts/list-make-targets $(MAKEFILE_LIST)
 
-.PHONY: distclean
-distclean: # Remove all but conf from build
+.PHONY: clean
+clean: # Remove all but conf from build
 	rm -rf build/{cache,downloads,tmp,sstate-cache}
+
+.PHONY: distclean
+distclean: # Remove build dir and submodules
+	rm -rf build $(SUBMODULES)
 
 .PHONY: menuconfig
 menuconfig: # Kernel make menuconfig
