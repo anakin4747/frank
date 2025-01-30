@@ -1,10 +1,16 @@
 #!/usr/bin/awk -f
 
 BEGIN { 
-	FS=":.*?# "
-	print "Makefile targets:"
+	FS=":.* # " # Separates the targets into $1 and the comments into $2
+	printf "\n  Makefile targets:\n\n"
 }
 
-/^[ a-zA-Z_-]+:.*?# .*$/ {
-	printf "\033[36m%-25s\033[0m %s\n", $1, $2
+# Matches targets and comments separated by FS
+/^[ a-zA-Z_-]+:.* # .*$/ {
+    # $1: targets, $2: comments
+	printf "    \033[36m%-14s\033[0m %s\n", $1, $2
+}
+
+END {
+    printf "\n"
 }
