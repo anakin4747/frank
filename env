@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source ./src/poky/oe-init-build-env
+# Use return to exit instead of exit since this is intended to be sourced
+# If you use exit it will close your shell on failure
+source ./src/poky/oe-init-build-env || return
 cd ..
 
 # bitbake-layers
@@ -24,21 +26,21 @@ alias \
 bbe() {
     [ $# -eq 1 ] || return 1;
 
-    flattened_1="$(echo "$1" | tr '/' '_')"
-    bitbake -e "$1" | tee build/"$flattened_1".env
-    echo build/"$flattened_1".env
+    output_file="build/$(echo "$1" | tr '/' '_').env"
+    bitbake -e "$1" | tee "$output_file"
+    echo "$output_file"
 }
 
 getvar() {
     case "$#" in
-        1) 
+        1)
             bitbake-getvar "$1" | sed -nE "s|$1=\"(.*)\"|\1|p"
             ;;
         2)
             bitbake-getvar -r "$2" "$1" | sed -nE "s|$1=\"(.*)\"|\1|p"
             ;;
-        *) 
-            echo "wrong \$#" 
+        *)
+            echo "wrong \$#"
             ;;
     esac
 }
