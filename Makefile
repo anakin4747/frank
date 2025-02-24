@@ -30,14 +30,16 @@ menuconfig: # Kernel make menuconfig
 
 # Build targets
 
+.PHONY: submodules
+submodules: $(SUBMODULES) # Clone git submodules
 $(SUBMODULES):
 	git submodule update --init --recursive --force
 
-build/conf/local.conf build/conf/bblayers.conf: $(SUBMODULES)
+build/conf/local.conf build/conf/bblayers.conf: submodules
 	@. ./src/poky/oe-init-build-env > /dev/null
 
 .PHONY: layers
-layers: build/conf/bblayers.conf $(SUBMODULES) # Find layers in ./src and save them to build/conf/bblayers.conf
+layers: build/conf/bblayers.conf submodules # Find layers in ./src and save them to build/conf/bblayers.conf
 	@./scripts/find-layers
 
 .PHONY: machine
@@ -49,5 +51,5 @@ distro: build/conf/local.conf # Set DISTRO variable in build/conf/local.conf
 	@./scripts/setvar DISTRO $(DISTRO)
 
 .PHONY: build
-build: layers machine distro $(SUBMODULES) # Build yocto
+build: layers machine distro submodules # Build yocto
 	. ./src/poky/oe-init-build-env > /dev/null; bitbake -k $(IMAGE)
