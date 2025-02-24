@@ -4,7 +4,7 @@
 # This is done by generating a build/conf/bblayers.conf and setting variables in
 # build/conf/local.conf all from this Makefile
 
-MACHINE ?= qemux86-64
+MACHINE ?= t490
 DISTRO ?= frank
 IMAGE ?= core-image-minimal
 
