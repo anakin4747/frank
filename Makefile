@@ -6,7 +6,7 @@
 
 MACHINE ?= t490
 DISTRO ?= frank
-IMAGE ?= core-image-minimal
+IMAGES ?= core-image-minimal core-image-minimal-initramfs.bb
 
 SUBMODULES := $(shell ./scripts/gitmodules)
 
@@ -52,4 +52,4 @@ distro: build/conf/local.conf # Set DISTRO variable in build/conf/local.conf
 
 .PHONY: build
 build: layers machine distro submodules # Build yocto
-	. ./src/poky/oe-init-build-env > /dev/null; bitbake -k $(IMAGE)
+	. ./src/poky/oe-init-build-env > /dev/null; bitbake -k $(IMAGES)
