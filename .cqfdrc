@@ -1,0 +1,8 @@
+[project]
+org='kin'
+name='frank'
+
+[build]
+command='make build'
+files=''
+archive='cqfd_${BUILD_ID}_%Gh.tar.xz'
