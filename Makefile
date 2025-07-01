@@ -6,19 +6,20 @@
 
 MACHINE ?= t490
 DISTRO ?= frank
-IMAGES ?= core-image-minimal core-image-minimal-initramfs.bb
+IMAGES ?= core-image-full-cmdline
 
 SUBMODULES := $(shell ./scripts/gitmodules)
 
-# Misc targets
+# Misc targets {{{
 
 .PHONY: help
 help:
 	@./scripts/list-make-targets $(MAKEFILE_LIST)
 
 .PHONY: clean
-clean: # Remove all but conf from build
-	rm -rf build/{cache,downloads,tmp,sstate-cache}
+clean: # Remove all but conf and downloads from build
+	rm -rf build/{cache,tmp,sstate-cache}
+	rm task-depends.dot pn-buildlist
 
 .PHONY: distclean
 distclean: # Remove build dir and submodules
@@ -28,7 +29,13 @@ distclean: # Remove build dir and submodules
 menuconfig: # Kernel make menuconfig
 	. ./src/poky/oe-init-build-env > /dev/null; bitbake -c menuconfig virtual/kernel
 
-# Build targets
+.PHONY: fetch
+fetch: # Fetch sources for all included recipes
+	. ./src/poky/oe-init-build-env > /dev/null; bitbake --runall=fetch $(IMAGES)
+
+# End of misc targets }}}
+
+# Build targets {{{
 
 .PHONY: submodules
 submodules: $(SUBMODULES) # Clone git submodules
@@ -53,3 +60,7 @@ distro: build/conf/local.conf # Set DISTRO variable in build/conf/local.conf
 .PHONY: build
 build: layers machine distro submodules # Build yocto
 	. ./src/poky/oe-init-build-env > /dev/null; bitbake -k $(IMAGES)
+
+# End of build targets }}}
+
+# vim: foldmethod=marker
