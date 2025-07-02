@@ -4,9 +4,9 @@
 # This is done by generating a build/conf/bblayers.conf and setting variables in
 # build/conf/local.conf all from this Makefile
 
-MACHINE ?= t490
+MACHINE ?= genericx86-64
 DISTRO ?= frank
-IMAGES ?= core-image-full-cmdline
+IMAGES ?= frank-image
 
 SUBMODULES := $(shell ./scripts/gitmodules)
 
