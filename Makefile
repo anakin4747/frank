@@ -38,8 +38,8 @@ fetch: # Fetch sources for all included recipes
 # Build targets {{{
 
 .PHONY: submodules
-submodules: $(SUBMODULES) # Clone git submodules
-$(SUBMODULES):
+submodules: $(SUBMODULES)/* # Clone git submodules
+$(SUBMODULES)/*:
 	git submodule update --init --recursive --force
 
 build/conf/local.conf build/conf/bblayers.conf: submodules
