@@ -51,10 +51,16 @@ build/conf/local.conf build/conf/bblayers.conf: submodules
 layers: build/conf/bblayers.conf submodules # Find layers in ./src and save them to build/conf/bblayers.conf
 	@./scripts/find-layers
 
+.PHONY: machine
+machine: build/conf/local.conf # Set MACHINE variable in build/conf/local.conf
+	@./scripts/setvar MACHINE $(MACHINE)
+
+.PHONY: distro
+distro: build/conf/local.conf # Set DISTRO variable in build/conf/local.conf
+	@./scripts/setvar DISTRO $(DISTRO)
+
 .PHONY: build
 build: layers machine distro submodules # Build yocto
-	export MACHINE
-	export DISTRO
 	. ./src/poky/oe-init-build-env > /dev/null
 	bitbake -k $(IMAGES)
 
