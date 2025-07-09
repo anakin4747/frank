@@ -27,13 +27,13 @@ distclean: # Remove build dir and submodules
 
 .PHONY: menuconfig
 menuconfig: layers # Kernel make menuconfig
-	cd src/poky && . ./oe-init-build-env > /dev/null; \
-		bitbake -c menuconfig virtual/kernel
+	bash -c "source ./src/poky/oe-init-build-env > /dev/null; \
+		bitbake -c menuconfig virtual/kernel"
 
 .PHONY: fetch
 fetch: layers # Fetch sources for all included recipes
-	cd src/poky && . ./oe-init-build-env > /dev/null; \
-		bitbake --runall=fetch $(IMAGES)
+	bash -c "source ./src/poky/oe-init-build-env > /dev/null; \
+		bitbake --runall=fetch $(IMAGES)"
 
 # End of misc targets }}}
 
@@ -45,7 +45,7 @@ $(SUBMODULES)/*:
 	@git submodule update --init --recursive --force
 
 build/conf/local.conf build/conf/bblayers.conf: submodules
-	(cd src/poky && . ./oe-init-build-env > /dev/null)
+	bash -c "source ./src/poky/oe-init-build-env > /dev/null"
 
 .PHONY: layers
 layers: build/conf/bblayers.conf submodules # Find layers in ./src and save them to build/conf/bblayers.conf
@@ -61,8 +61,8 @@ distro: build/conf/local.conf # Set DISTRO variable in build/conf/local.conf
 
 .PHONY: build
 build: layers machine distro submodules # Build yocto
-	. ./src/poky/oe-init-build-env > /dev/null
-	bitbake -k $(IMAGES)
+	bash -c "source ./src/poky/oe-init-build-env > /dev/null; \
+		bitbake -k $(IMAGES)"
 
 # End of build targets }}}
 
