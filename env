@@ -7,21 +7,21 @@ cd ..
 
 # bitbake-layers
 alias \
-    add-layer='bitbake-layers add-layer' \
-    create-layer='bitbake-layers create-layer' \
-    fetch-layer='bitbake-layers layerindex-fetch' \
-    remove-layer='bitbake-layers remove-layer' \
-    show-layers='bitbake-layers show-layers' \
-    show-recipes='bitbake-layers show-recipes' \
+    add-layer='cqfd run bitbake-layers add-layer' \
+    create-layer='cqfd run bitbake-layers create-layer' \
+    fetch-layer='cqfd run bitbake-layers layerindex-fetch' \
+    remove-layer='cqfd run bitbake-layers remove-layer' \
+    show-layers='cqfd run bitbake-layers show-layers' \
+    show-recipes='cqfd run bitbake-layers show-recipes' \
 
 # recipetool
 alias \
-    create-append='recipetool newappend' \
+    create-append='cqfd run recipetool newappend' \
 
 # runqemu
 alias \
-    rq='runqemu slirp qemux86-64 nographic' \
-    rqg='runqemu slirp qemux86-64' \
+    rq='cqfd run runqemu slirp qemux86-64 nographic' \
+    rqg='cqfd run runqemu slirp qemux86-64'
 
 bbe() {
     [ $# -eq 1 ] || return 1;
