@@ -26,12 +26,14 @@ distclean: # Remove build dir and submodules
 	rm -rf build $(SUBMODULES)
 
 .PHONY: menuconfig
-menuconfig: # Kernel make menuconfig
-	. ./src/poky/oe-init-build-env > /dev/null; bitbake -c menuconfig virtual/kernel
+menuconfig: submodules # Kernel make menuconfig
+	cd src/poky && . ./oe-init-build-env > /dev/null; \
+		bitbake -c menuconfig virtual/kernel
 
 .PHONY: fetch
-fetch: # Fetch sources for all included recipes
-	. ./src/poky/oe-init-build-env > /dev/null; bitbake --runall=fetch $(IMAGES)
+fetch: submodules # Fetch sources for all included recipes
+	cd src/poky && . ./oe-init-build-env > /dev/null; \
+		bitbake --runall=fetch $(IMAGES)
 
 # End of misc targets }}}
 
@@ -43,23 +45,18 @@ $(SUBMODULES)/*:
 	git submodule update --init --recursive --force
 
 build/conf/local.conf build/conf/bblayers.conf: submodules
-	@. ./src/poky/oe-init-build-env > /dev/null
+	(cd src/poky && . ./oe-init-build-env > /dev/null)
 
 .PHONY: layers
 layers: build/conf/bblayers.conf submodules # Find layers in ./src and save them to build/conf/bblayers.conf
 	@./scripts/find-layers
 
-.PHONY: machine
-machine: build/conf/local.conf # Set MACHINE variable in build/conf/local.conf
-	@./scripts/setvar MACHINE $(MACHINE)
-
-.PHONY: distro
-distro: build/conf/local.conf # Set DISTRO variable in build/conf/local.conf
-	@./scripts/setvar DISTRO $(DISTRO)
-
 .PHONY: build
 build: layers machine distro submodules # Build yocto
-	. ./src/poky/oe-init-build-env > /dev/null; bitbake -k $(IMAGES)
+	export MACHINE
+	export DISTRO
+	. ./src/poky/oe-init-build-env > /dev/null
+	bitbake -k $(IMAGES)
 
 # End of build targets }}}
 
