@@ -18,8 +18,8 @@ help:
 
 .PHONY: clean
 clean: # Remove all but conf and downloads from build
-	rm -rf build/{cache,tmp,sstate-cache}
-	rm task-depends.dot pn-buildlist
+	-rm -rf build/{cache,tmp,sstate-cache}
+	-rm task-depends.dot pn-buildlist
 
 .PHONY: distclean
 distclean: # Remove build dir and submodules
