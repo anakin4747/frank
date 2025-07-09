@@ -1,0 +1,15 @@
+#!/bin/bash
+
+sudo umount /dev/sda?
+
+cd build/tmp/deploy/images/genericx86-64/
+
+sudo bmaptool copy \
+    --no-sig-verify \
+    --bmap frank-image-genericx86-64.rootfs.wic.bmap \
+    frank-image-genericx86-64.rootfs.wic \
+    /dev/sda
+
+sync
+
+sudo eject /dev/sda
