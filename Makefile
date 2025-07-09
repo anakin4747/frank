@@ -26,12 +26,12 @@ distclean: # Remove build dir and submodules
 	rm -rf build $(SUBMODULES)
 
 .PHONY: menuconfig
-menuconfig: submodules # Kernel make menuconfig
+menuconfig: layers # Kernel make menuconfig
 	cd src/poky && . ./oe-init-build-env > /dev/null; \
 		bitbake -c menuconfig virtual/kernel
 
 .PHONY: fetch
-fetch: submodules # Fetch sources for all included recipes
+fetch: layers # Fetch sources for all included recipes
 	cd src/poky && . ./oe-init-build-env > /dev/null; \
 		bitbake --runall=fetch $(IMAGES)
 
@@ -42,7 +42,7 @@ fetch: submodules # Fetch sources for all included recipes
 .PHONY: submodules
 submodules: $(SUBMODULES)/* # Clone git submodules
 $(SUBMODULES)/*:
-	git submodule update --init --recursive --force
+	@git submodule update --init --recursive --force
 
 build/conf/local.conf build/conf/bblayers.conf: submodules
 	(cd src/poky && . ./oe-init-build-env > /dev/null)
