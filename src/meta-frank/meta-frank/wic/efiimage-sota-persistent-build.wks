@@ -1,0 +1,9 @@
+# short-description: Create an OTA-enabled EFI disk image
+# long-description: Creates an OTA-enabled EFI disk image that the user
+# can directly dd to boot media with persistent build partition
+
+part /boot --source bootimg-efi --sourceparams="loader=grub-efi" --ondisk hda --label msdos --active --align 1024
+part /build --source empty --ondisk hda --fstype=ext4 --label build --align 1024 --size 50G
+part / --source otaimage --ondisk hda --fstype=ext4 --align 1024 --use-uuid
+
+bootloader --ptable gpt --timeout=5 --append="rootfstype=ext4 console=ttyS0,115200 console=tty0" --configfile="grub-ota.cfg"
