@@ -3,7 +3,7 @@ LICENSE = "MIT"
 
 require recipes-core/images/core-image-minimal.bb
 
-RDEPENDS:${PN} = "usb-installer"
+IMAGE_INSTALL += "usb-installer"
 
 do_rootfs[depends] += "frank-image:do_image_wic"
 
