@@ -1,0 +1,14 @@
+[Unit]
+Description=Run OS Installer on tty3
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/install.sh
+StandardOutput=tty
+StandardError=tty
+TTYPath=/dev/tty3
+TTYVHangup=yes
+
+[Install]
+WantedBy=multi-user.target
