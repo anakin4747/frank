@@ -27,8 +27,8 @@ test -b "$installation_destination" || {
 
 log "found installation destination: '$installation_destination'"
 
-local bmap="/root/*.wic.bmap"
-local wic="/root/*.wic"
+local bmap="/*.wic.bmap"
+local wic="/*.wic"
 
 test -f "$bmap" || err "failed to find bmap file: '$bmap'"
 test -f "$wic" || err "failed to find wic file: '$wic'"
