@@ -6,7 +6,7 @@
 
 MACHINE ?= genericx86-64
 DISTRO ?= frank
-IMAGES ?= frank-image
+IMAGES ?= frank-installer-image
 
 SUBMODULES := $(shell ./scripts/gitmodules)
 
