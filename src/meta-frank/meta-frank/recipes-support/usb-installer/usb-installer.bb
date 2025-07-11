@@ -1,5 +1,5 @@
 SUMMARY = "USB installer recipe"
-LICENSE = "MIT"
+LICENSE = "CLOSED"
 
 SRC_URI = "\
     file://install.sh \
