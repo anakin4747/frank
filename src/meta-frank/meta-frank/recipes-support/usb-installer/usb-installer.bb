@@ -23,7 +23,7 @@ FILES:${PN} = "\
     ${systemd_system_unitdir}/usb-install.service \
 "
 
-do_install_append() {
+do_install() {
     install -d ${D}${bindir}
     install -m 0755 ${WORKDIR}/install.sh ${D}${bindir}/install.sh
     install -d ${D}${systemd_system_unitdir}
