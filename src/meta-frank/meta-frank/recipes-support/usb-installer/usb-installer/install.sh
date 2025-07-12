@@ -11,7 +11,7 @@ log() {
 
 chvt 3
 
-local installer_boot_drive="$(lsblk -pno PKNAME,PARTLABEL,LABEL | awk '/installer-boot/ { print $1 }')"
+local installer_boot_drive="$(lsblk -pno PKNAME,PARTLABEL,LABEL | awk '/boot-usb/ { print $1 }')"
 
 test -b "$installer_boot_drive" || {
     err "failed to find block device for installer boot drive: '$installer_boot_drive'"
