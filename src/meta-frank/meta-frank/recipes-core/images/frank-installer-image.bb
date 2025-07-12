@@ -7,10 +7,9 @@ IMAGE_INSTALL += "usb-installer"
 
 do_rootfs[depends] += "frank-image:do_image_wic"
 
-WIC = "${DEPLOY_DIR_IMAGE}/frank-image-${MACHINE}.rootfs.wic"
-
 load_payload_image() {
-    cp --no-preserve=ownership ${WIC} ${WIC}.bmap ${IMAGE_ROOTFS}
+    WIC="$(echo "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.wic" | sed 's/frank-installer-image/frank-image/g')"
+    cp --no-preserve=ownership "${WIC}" "${WIC}.bmap" "${IMAGE_ROOTFS}"
 }
 
 ROOTFS_POSTPROCESS_COMMAND += "load_payload_image"
