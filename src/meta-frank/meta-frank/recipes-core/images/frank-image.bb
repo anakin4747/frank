@@ -9,4 +9,6 @@ IMAGE_INSTALL = "\
     packagegroup-core-boot \
 "
 
+WKS_FILE:sota = "efiimage-sota-persistent-build.wks"
+
 inherit image

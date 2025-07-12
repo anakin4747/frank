@@ -3,6 +3,8 @@ LICENSE = "MIT"
 
 require recipes-core/images/core-image-minimal.bb
 
+WKS_FILE:sota = "x86-64-usb-installer.wks"
+
 IMAGE_INSTALL += "usb-installer"
 
 do_rootfs[depends] += "frank-image:do_image_wic"
