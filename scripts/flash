@@ -1,15 +1,67 @@
 #!/bin/bash
 
-sudo umount /dev/sda?
+WICS=$(ls build/tmp/deploy/images/*/*.rootfs.wic)
 
-cd build/tmp/deploy/images/genericx86-64/
+set -- $WICS
+if [ $# -eq 1 ]; then
+    WIC=$1
+else
+    PS3="select image: "
+    select disk in $*; do
+        if [ -n "$disk" ]; then
+            WIC="$disk"
+            break
+        fi
+    done
+fi
+
+test -f $WIC || {
+    echo -e "\033[31m'$WIC' is not a file\033[0m"
+    exit 1
+}
+
+DISKS=$(ls /dev/sd?)
+
+set -- $DISKS
+if [ $# -eq 1 ]; then
+    DISK=$1
+else
+    PS3="select SATA disk: "
+    select disk in $*; do
+        if [ -n "$disk" ]; then
+            DISK="$disk"
+            break
+        fi
+    done
+fi
+
+test -b $DISK || {
+    echo -e "\033[31m'$DISK' is not a block device\033[0m"
+    exit 1
+}
+
+PS3="do you want to flash '$(basename $WIC)' on '$DISK'? "
+select yn in yes no; do
+    case $yn in
+        yes) break;;
+        no) exit;;
+    esac
+done
+
+echo umount $DISK?
+sudo umount $DISK?
+
+echo "flashing"
 
 sudo bmaptool copy \
     --no-sig-verify \
-    --bmap frank-image-genericx86-64.rootfs.wic.bmap \
-    frank-image-genericx86-64.rootfs.wic \
-    /dev/sda
+    --bmap "$WIC.bmap" \
+    "$WIC" \
+    "$DISK" || {
+        echo -e "\033[31mfailed to flash\033[0m"
+        exit 1
+}
 
 sync
 
-sudo eject /dev/sda
+sudo eject "$DISK"
