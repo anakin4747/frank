@@ -13,6 +13,7 @@ PACKAGECONFIG[docker] = ",,,docker,,podman"
 PACKAGECONFIG[podman] = ",,,podman,,docker"
 
 RDEPENDS:${PN} += "\
+    bash \
     git \
     gzip \
     tar \
