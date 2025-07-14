@@ -9,6 +9,8 @@ IMAGE_INSTALL = "\
     packagegroup-core-boot \
     podman \
     cqfd \
+    bash \
+    vim \
 "
 
 WKS_FILE:sota = "efiimage-sota-persistent-build.wks"
