@@ -1,26 +1,33 @@
 #!/bin/bash
 
-WICS=$(ls build/tmp/deploy/images/*/*.rootfs.wic)
+WICS=$(ls build/tmp/deploy/images/*/*.rootfs.wic* 2> /dev/null | grep -v bmap)
 
 set -- $WICS
 if [ $# -eq 1 ]; then
     WIC=$1
 else
     PS3="select image: "
-    select disk in $*; do
-        if [ -n "$disk" ]; then
-            WIC="$disk"
+    select wic in $*; do
+        if [ -n "$wic" ]; then
+            WIC="$wic"
             break
         fi
     done
 fi
 
-test -f $WIC || {
+test -f "$WIC" || {
     echo -e "\033[31m'$WIC' is not a file\033[0m"
     exit 1
 }
 
-DISKS=$(ls /dev/sd?)
+BMAP=$(echo "$WIC" | sed -E 's/(rootfs\.wic).*/\1.bmap/')
+
+test -f "$BMAP" || {
+    echo -e "\033[31m'$BMAP' is not a file\033[0m"
+    exit 1
+}
+
+DISKS=$(ls /dev/sd? 2> /dev/null)
 
 set -- $DISKS
 if [ $# -eq 1 ]; then
@@ -35,10 +42,18 @@ else
     done
 fi
 
-test -b $DISK || {
+test -b "$DISK" || {
     echo -e "\033[31m'$DISK' is not a block device\033[0m"
     exit 1
 }
+
+cat << EOF
+
+disk: '$DISK'
+bmap: '$BMAP'
+wic:  '$WIC'
+
+EOF
 
 PS3="do you want to flash '$(basename $WIC)' on '$DISK'? "
 select yn in yes no; do
@@ -52,10 +67,9 @@ echo umount $DISK?
 sudo umount $DISK?
 
 echo "flashing"
-
 sudo bmaptool copy \
     --no-sig-verify \
-    --bmap "$WIC.bmap" \
+    --bmap "$BMAP" \
     "$WIC" \
     "$DISK" || {
         echo -e "\033[31mfailed to flash\033[0m"
