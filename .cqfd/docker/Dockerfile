@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y \
     socat \
     sudo \
     texinfo \
+    tmux \
     unzip \
     wget \
     xz-utils \
