@@ -7,10 +7,14 @@ IMAGE_FEATURES = "\
 
 IMAGE_INSTALL = "\
     packagegroup-core-boot \
+    packagegroup-base \
+    weston \
+    wayland \
     podman \
     cqfd \
     bash \
     vim \
+    strace \
 "
 
 WKS_FILE:sota = "efiimage-sota-persistent-build.wks"
