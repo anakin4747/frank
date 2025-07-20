@@ -28,7 +28,8 @@ distclean: # Remove build dir and submodules
 .PHONY: menuconfig
 menuconfig: layers # Kernel make menuconfig
 	bash -c "source ./src/poky/oe-init-build-env > /dev/null; \
-		bitbake -c menuconfig virtual/kernel"
+		bitbake -c menuconfig virtual/kernel && \
+		bitbake -c savedefconfig virtual/kernel"
 
 .PHONY: fetch
 fetch: layers # Fetch sources for all included recipes
