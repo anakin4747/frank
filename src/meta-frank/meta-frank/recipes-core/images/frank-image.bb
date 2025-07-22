@@ -17,6 +17,6 @@ IMAGE_INSTALL = "\
     strace \
 "
 
-WKS_FILE:sota = "efiimage-sota-persistent-build.wks"
+IMAGE_FSTYPES:remove = "wic"
 
 inherit image
