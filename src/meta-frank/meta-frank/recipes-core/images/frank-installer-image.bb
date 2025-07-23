@@ -10,7 +10,7 @@ WIC_CREATE_EXTRA_ARGS = "--no-fstab-update"
 
 IMAGE_INSTALL += "usb-installer"
 
-do_rootfs[depends] += "frank-image:do_image_ostreecommit"
+do_rootfs[depends] += "frank-image:do_image_wic"
 
 load_payload_image() {
     WIC="$(echo "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.wic" | sed 's/frank-installer-image/frank-image/g')"
@@ -18,11 +18,3 @@ load_payload_image() {
 }
 
 ROOTFS_POSTPROCESS_COMMAND += "load_payload_image"
-
-do_image_garagecheck[noexec] = "1"
-do_image_garagesign[noexec] = "1"
-do_image_ostree[noexec] = "1"
-do_image_ostreecommit[noexec] = "1"
-do_image_ostreepush[noexec] = "1"
-do_image_ota[noexec] = "1"
-do_image_ota_ext4[noexec] = "1"
