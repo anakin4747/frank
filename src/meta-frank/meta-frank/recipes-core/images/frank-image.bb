@@ -17,6 +17,4 @@ IMAGE_INSTALL = "\
     strace \
 "
 
-IMAGE_FSTYPES:remove = "wic"
-
 inherit image
