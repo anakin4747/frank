@@ -3,6 +3,11 @@ org='kin'
 name='frank'
 
 [build]
-command='make build'
+command='bash -c "BUILD_CONFIG=configs/cfg source ./env build"'
 files=''
-archive='cqfd_${BUILD_ID}_%Gh.tar.xz'
+
+[both]
+command='bash -c "BUILD_CONFIG=configs/multi.cfg source ./env multibuild"'
+files=''
+
+# vim: ft=ini
