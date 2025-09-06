@@ -1,0 +1,6 @@
+# dont use quotes
+# vim: ft=sh
+
+MACHINE=genericx86-64
+DISTRO=frank
+IMAGES=frank-image
