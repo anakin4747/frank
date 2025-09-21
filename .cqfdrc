@@ -3,11 +3,7 @@ org='kin'
 name='frank'
 
 [build]
-command='bash -c "BUILD_CONFIG=configs/cfg source ./env build"'
-files=''
-
-[both]
-command='bash -c "BUILD_CONFIG=configs/multi.cfg source ./env multibuild"'
-files=''
+command='kas build -- -k'
+docker_run_args='-p 1234:1234'
 
 # vim: ft=ini

@@ -1,64 +1,6 @@
 #!/usr/bin/env bash
 
-DEFAULT_CONFIG="configs/multi.cfg"
-: "${BUILD_CONFIG:=$DEFAULT_CONFIG}"
-
-export TOPDIR=$PWD/build
-export TMPDIR=$TOPDIR/tmp
-export BUILDDIR=$TOPDIR
-export BBPATH=$TOPDIR
-
-# removes the need for build/conf/bblayers.conf
-export BBLAYERS="$(
-    find "$TOPDIR/../src" -path '*meta*conf/layer.conf*' -print0 |
-    xargs -0 -n1 dirname |
-    xargs -n1 dirname |
-    xargs
-)"
-
-export BBFILES=""
-
-BB_ENV_PASSTHROUGH="PATH TOPDIR BUILDDIR TMPDIR BBLAYERS BBFILES BBPATH"
-
-# collect build environment from config file
-while IFS='=' read -r key value; do
-    [[ -z "$key" || "$key" =~ ^# ]] && continue
-    BB_ENV_PASSTHROUGH+=" $key"
-    export "$key=$value"
-done < "$BUILD_CONFIG"
-
-export BB_ENV_PASSTHROUGH
-
-[[ -n "$DISTRO" || -n "$MACHINE" || -n "$IMAGES" ]] || {
-    echo "missing one of the three"
-    return 1
-}
-
-git submodule update --init --force --recursive || {
-    echo "failed to update submodules"
-    return 1
-}
-
-# assumes local.conf is never used, is that ideal?
-rm $BUILDDIR/conf/{local,bblayers}.conf
-
-# Use return to exit instead of exit since this is intended to be sourced
-# If you use exit it will close your shell on failure
-source ./src/poky/oe-init-build-env $BUILDDIR 2> /dev/null || {
-    echo "failed to source oe-init-build-env"
-    return 1
-}
-
 # aliases and functions {{{
-
-# bitbake-layers
-alias \
-    add-layer='bitbake-layers add-layer' \
-    create-layer='bitbake-layers create-layer' \
-    fetch-layer='bitbake-layers layerindex-fetch' \
-    remove-layer='bitbake-layers remove-layer' \
-    show-layers='bitbake-layers show-layers' \
-    show-recipes='bitbake-layers show-recipes' \
 
 # recipetool
 alias \
@@ -66,13 +8,11 @@ alias \
 
 # runqemu
 alias \
-    rq='runqemu slirp qemux86-64 nographic' \
     rqg='runqemu slirp qemux86-64'
 
 bbe() {
     [ $# -eq 1 ] || return 1;
-
-    output_file="$BUILDDIR/$(echo "$1" | tr '/' '_').env"
+    output_file="${1//\//_}.env"
     bitbake -e "$1" | tee "$output_file"
     echo "$output_file"
 }
@@ -124,36 +64,5 @@ cdworkdir() {
     [ -d "$WORKDIR" ] && cd "$WORKDIR" || return 1;
 }
 
-unalias up 2> /dev/null || true
-PROJECT_ROOT=$(dirname "$0" | xargs realpath)
-up() {
-    cd "$PROJECT_ROOT" || return 1
-}
-
 # }}}
-
-case "$1" in
-    build)
-        bitbake -k $IMAGES
-        ;;
-    multibuild)
-        bitbake -k mc::$IMAGES mc:frank-qemu:$IMAGES
-        ;;
-    clean)
-        rm -rf $BUILDDIR/{cache,tmp,sstate-cache}
-        rm task-depends.dot pn-buildlist
-        ;;
-    distclean)
-        rm -rf $BUILDDIR $(./scripts/gitmodules)
-        ;;
-    fetch)
-        bitbake --runall=fetch $IMAGES
-        ;;
-    menuconfig)
-        bitbake -c menuconfig virtual/kernel
-        bitbake -c savedefconfig virtual/kernel
-        ;;
-    *)
-        ;;
-esac
 
