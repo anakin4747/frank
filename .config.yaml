@@ -1,0 +1,60 @@
+header:
+  version: 12
+
+machine: qemux86-64
+distro: frank
+target: frank-image
+
+repos:
+
+  poky:
+    path: src/poky
+    url: https://git.yoctoproject.org/git/poky
+    commit: fb91a49387cfb0c8d48303bb3354325ba2a05587
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+    patches:
+      patch1:
+        repo: poky
+        path: ../../patches/0001-kernel.bbclass-generate-compile_commands.json.patch
+      patch2:
+        repo: poky
+        path: ../../patches/0002-clangd-add-compile_commands.bbclass.patch
+      patch3:
+        repo: poky
+        path: ../../patches/0003-cmake.bbclass-inherit-compile_commands.bbclass.patch
+      patch4:
+        repo: poky
+        path: ../../patches/0004-meson.bbclass-inherit-compile_commands.bbclass.patch
+
+  meta-openembedded:
+    path: src/meta-openembedded
+    url: git://git.openembedded.org/meta-openembedded
+    commit: e621da947048842109db1b4fd3917a02e0501aa2
+    layers:
+      meta-filesystems:
+      meta-networking:
+      meta-oe:
+      meta-python:
+      meta-webserver:
+
+  meta-selinux:
+    path: src/meta-selinux
+    url: git://git.yoctoproject.org/meta-selinux
+    commit: c999577d7ab4b1b54fff61ab15c46a6f9e242d0d
+
+  meta-virtualization:
+    path: src/meta-virtualization
+    url: git://git.yoctoproject.org/meta-virtualization
+    commit: af1db2042caf8021d767dce1b26c08b59b96f3d1
+
+  meta-frank:
+    path: src/meta-frank
+    layers:
+      meta-frank:
+
+local_conf_header:
+  meta-frank: |
+    BBMASK += "uutils-coreutils"

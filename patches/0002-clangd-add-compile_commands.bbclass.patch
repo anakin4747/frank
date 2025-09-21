@@ -1,0 +1,43 @@
+From 2669f22221f211fd7382aa9754bc92180e36efd0 Mon Sep 17 00:00:00 2001
+From: Anakin Childerhose <anakin@childerhose.ca>
+Date: Sat, 2 Aug 2025 16:28:18 -0400
+Subject: [PATCH 2/4] clangd: add compile_commands.bbclass
+
+Add a class to link the ${B}/compile_commands.json file to
+${S}/compile_commands.json to automatically configure the clangd
+language server for build systems that generate a compile_commands.json
+file.
+
+Signed-off-by: Anakin Childerhose <anakin@childerhose.ca>
+---
+ meta/classes-recipe/compile_commands.bbclass | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+ create mode 100644 meta/classes-recipe/compile_commands.bbclass
+
+diff --git a/meta/classes-recipe/compile_commands.bbclass b/meta/classes-recipe/compile_commands.bbclass
+new file mode 100644
+index 0000000000..da8795647c
+--- /dev/null
++++ b/meta/classes-recipe/compile_commands.bbclass
+@@ -0,0 +1,18 @@
++#
++# Copyright Anakin Childerhose
++#
++# SPDX-License-Identifier: MIT
++#
++
++do_generate_compile_commands[doc] = "Add compile_commands.json to S for clangd language server"
++do_generate_compile_commands() {
++    if ! [ -f "${B}/compile_commands.json" ]; then
++        bbwarn "no compile_commands.json found"
++        return
++    fi
++
++    ln -sf ${B}/compile_commands.json ${S}/compile_commands.json || {
++        bbwarn "failed to link compile_commands.json to \${S}"
++    }
++}
++addtask generate_compile_commands after do_compile
+-- 
+2.51.0
+

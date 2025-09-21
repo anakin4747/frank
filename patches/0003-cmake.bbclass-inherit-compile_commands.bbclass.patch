@@ -1,0 +1,30 @@
+From d62645fbe649e0358adcb4638278b3b9157958ea Mon Sep 17 00:00:00 2001
+From: Anakin Childerhose <anakin@childerhose.ca>
+Date: Sat, 2 Aug 2025 16:40:30 -0400
+Subject: [PATCH 3/4] cmake.bbclass: inherit compile_commands.bbclass
+
+cmake.bbclass generates a compile_commands.json file by default in ${B}.
+To automatically configure the clangd language server, link the
+compile_commands.json file to ${S} via compile_commands.bbclass.
+
+Signed-off-by: Anakin Childerhose <anakin@childerhose.ca>
+---
+ meta/classes-recipe/cmake.bbclass | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/meta/classes-recipe/cmake.bbclass b/meta/classes-recipe/cmake.bbclass
+index 1488d744d4..2da4a9a6c5 100644
+--- a/meta/classes-recipe/cmake.bbclass
++++ b/meta/classes-recipe/cmake.bbclass
+@@ -4,6 +4,8 @@
+ # SPDX-License-Identifier: MIT
+ #
+ 
++inherit compile_commands
++
+ # Path to the CMake file to process.
+ OECMAKE_SOURCEPATH ??= "${S}"
+ 
+-- 
+2.51.0
+

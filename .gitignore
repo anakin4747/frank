@@ -1,3 +1,7 @@
 build/*
 pn-buildlist
 task-depends.dot
+
+src/*
+!src/meta-frank/
+.kas_shell_history

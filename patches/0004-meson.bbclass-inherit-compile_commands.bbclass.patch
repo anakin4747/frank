@@ -1,0 +1,30 @@
+From e8dd7bb7a1b34c678719892f4cf13cb57105c9fb Mon Sep 17 00:00:00 2001
+From: Anakin Childerhose <anakin@childerhose.ca>
+Date: Sat, 2 Aug 2025 16:43:05 -0400
+Subject: [PATCH 4/4] meson.bbclass: inherit compile_commands.bbclass
+
+meson.bbclass generates a compile_commands.json file by default in ${B}.
+To automatically configure the clangd language server, link the
+compile_commands.json file to ${S} via compile_commands.bbclass.
+
+Signed-off-by: Anakin Childerhose <anakin@childerhose.ca>
+---
+ meta/classes-recipe/meson.bbclass | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meta/classes-recipe/meson.bbclass b/meta/classes-recipe/meson.bbclass
+index c8b3e1ec29..4f5d7b9e5e 100644
+--- a/meta/classes-recipe/meson.bbclass
++++ b/meta/classes-recipe/meson.bbclass
+@@ -4,7 +4,7 @@
+ # SPDX-License-Identifier: MIT
+ #
+ 
+-inherit python3native meson-routines qemu
++inherit python3native meson-routines qemu compile_commands
+ 
+ DEPENDS:append = " meson-native ninja-native"
+ 
+-- 
+2.51.0
+
