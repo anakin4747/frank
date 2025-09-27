@@ -1,0 +1,3 @@
+#!/bin/sh
+
+runqemu slirp nographic qemuparams="-s -S" bootparams="nokaslr"
