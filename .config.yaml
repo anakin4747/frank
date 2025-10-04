@@ -2,7 +2,7 @@ header:
   version: 12
 
 machine: qemux86-64
-distro: frank
+distro: frank-dbg
 target: frank-image
 
 repos:
